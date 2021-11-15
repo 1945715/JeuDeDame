@@ -62,7 +62,7 @@ public class Damier {
         for (int y = 0; y < 10; y += 2) {
             for (int x = 0; x < 10; x++) {
                 Tuile tuile = new Tuile(x, y);
-                /* TODO
+
                 if (x % 2 == 0) {
                     ajouterPion(tuile, null);
                 } else {
@@ -74,14 +74,14 @@ public class Damier {
                         ajouterPion(tuile, null);
                     }
                 }
-                */
+
 
             }
         }
         for (int y = 1; y < 10; y += 2) {
             for (int x = 0; x < 10; x++) {
                 Tuile tuile = new Tuile(x, y);
-                                    /* TODO
+
                 if (x % 2 == 0) {
 
                     if (y < 4) {
@@ -95,24 +95,34 @@ public class Damier {
                     ajouterPion(tuile, null);
 
 
-                }
+                }/*
                     blanc 4 x 5 y
                     noir  5 x 4 y
                     noir  7 x 2 y
-                    noir  3 x 4 y
-                  */
+                    noir  3 x 4 y*/
+
             }
         }
-        ajouterPion(new Tuile(4,5), new Pion(Pion.Couleur.BLANC));
-        ajouterPion(new Tuile(5,4), new Pion(Pion.Couleur.NOIR));
-        ajouterPion(new Tuile(7,2), new Pion(Pion.Couleur.NOIR));
-        ajouterPion(new Tuile(3,4), new Pion(Pion.Couleur.NOIR));
+
 
         m_estTourJoueurBlanc = true;
         Set<Tuile> tuiles = m_tuiles.keySet();
         for (Tuile tuile : tuiles) {
             populerTuile(tuile);
         }
+        for (Tuile tuile : tuiles) {
+            supprimerPion(tuile);
+        }
+
+
+        ajouterPion(new Tuile(4,5), new Pion(Pion.Couleur.BLANC));
+        ajouterPion(new Tuile(5,4), new Pion(Pion.Couleur.NOIR));
+        ajouterPion(new Tuile(7,2),new Pion(Pion.Couleur.NOIR));
+        ajouterPion(new Tuile(3,4), new Pion(Pion.Couleur.NOIR));
+       // detecterNbMovement(getTuile(4,5), 0);
+
+
+
 
     }
 
@@ -344,6 +354,7 @@ public class Damier {
     }
 
 
+
     /**
      * Permet d'obtenir les cases de déplacement disponible pour un pion
      *
@@ -351,6 +362,7 @@ public class Damier {
      * @return une liste contenant les tuiles où le pion peut se déaplacer
      */
     public LinkedList<Tuile> obtenirCasesDisponibles(Tuile p_tuile) {
+        detecterNbMovement(p_tuile, 0);
         Pion.Couleur couleurOpposee;
         if (getCouleurPionSurTuile(p_tuile) == Pion.Couleur.BLANC) {
             couleurOpposee = Pion.Couleur.NOIR;
@@ -832,9 +844,66 @@ public class Damier {
     public boolean verifierResteAucunPion(Pion.Couleur p_couleur) {
         return (compterCouleur(p_couleur) == 0);
     }
-    /*public int detecterNbMovement(Tuile p_tuile){
 
-    }*/
+    /**
+     * retourne le nombre de mouvement maximal que peut faire un pion sur une tuile
+     * @param p_tuile
+     * @return
+     */
+    public int detecterNbMovement(Tuile p_tuile, int p_nbMouvement){
+        //Haut gauche
+        if (p_tuile != null) {
+            if(p_tuile.getTuileHautGauche() != null && p_tuile.getTuileHautGauche().getTuileHautGauche() != null){
+                if(!estVideTuile(p_tuile.getTuileHautGauche())){
+                    if(estVideTuile(p_tuile.getTuileHautGauche().getTuileHautGauche())){
+                        if(getCouleurPionSurTuile(p_tuile) != getCouleurPionSurTuile(p_tuile.getTuileHautGauche())){
+                            p_nbMouvement ++;
+                            p_nbMouvement = detecterNbMovement(p_tuile.getTuileHautGauche().getTuileHautGauche(), p_nbMouvement);
+                        }
+                    }
+                }
+            }
+
+            //Haut Droite
+            if(p_tuile.getTuileHautDroite() != null && p_tuile.getTuileHautDroite().getTuileHautDroite() != null){
+                if(!estVideTuile(p_tuile.getTuileHautDroite())){
+                    if(estVideTuile(p_tuile.getTuileHautDroite().getTuileHautDroite())){
+                        if(getCouleurPionSurTuile(p_tuile) != getCouleurPionSurTuile(p_tuile.getTuileHautDroite())){
+                            p_nbMouvement ++;
+                            p_nbMouvement = detecterNbMovement(p_tuile.getTuileHautDroite().getTuileHautDroite(), p_nbMouvement);
+                        }
+                    }
+                }
+            }
+
+            //Bas Droite
+            if(p_tuile.getTuileBasDroite() != null && p_tuile.getTuileBasDroite().getTuileBasDroite() != null){
+                if(!estVideTuile(p_tuile.getTuileBasDroite())){
+                    if(estVideTuile(p_tuile.getTuileBasDroite().getTuileBasDroite())){
+                        if(getCouleurPionSurTuile(p_tuile) != getCouleurPionSurTuile(p_tuile.getTuileBasDroite())){
+                            p_nbMouvement ++;
+                            p_nbMouvement = detecterNbMovement(p_tuile.getTuileBasDroite().getTuileBasDroite(), p_nbMouvement);
+                        }
+                    }
+                }
+            }
+
+            //Haut gauche
+            if(p_tuile.getTuileBasDroite() != null && p_tuile.getTuileBasDroite().getTuileBasDroite() != null){
+                if(!estVideTuile(p_tuile.getTuileBasGauche())){
+                    if(estVideTuile(p_tuile.getTuileBasGauche().getTuileBasGauche())){
+                        if(getCouleurPionSurTuile(p_tuile) != getCouleurPionSurTuile(p_tuile.getTuileBasGauche())){
+                            p_nbMouvement ++;
+                            p_nbMouvement = detecterNbMovement(p_tuile.getTuileBasGauche().getTuileBasGauche(), p_nbMouvement);
+                        }
+                    }
+                }
+            }
+
+        }
+
+        return p_nbMouvement;
+    }
 
     /**
      * Permet de vérifier si les pions d'une couleur peuvent encore bouger
