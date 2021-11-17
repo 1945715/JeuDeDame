@@ -1,5 +1,6 @@
 package cstjean.mobile.jeudedame.code;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -119,7 +120,7 @@ public class Damier {
         ajouterPion(new Tuile(5,4), new Pion(Pion.Couleur.NOIR));
         ajouterPion(new Tuile(7,2),new Pion(Pion.Couleur.NOIR));
         ajouterPion(new Tuile(3,4), new Pion(Pion.Couleur.NOIR));
-       // detecterNbMovement(getTuile(4,5), 0);
+        ajouterPion(new Tuile(0,9), new Pion(Pion.Couleur.BLANC));
 
 
 
@@ -362,7 +363,6 @@ public class Damier {
      * @return une liste contenant les tuiles où le pion peut se déaplacer
      */
     public LinkedList<Tuile> obtenirCasesDisponibles(Tuile p_tuile) {
-        detecterNbMovement(p_tuile, 0);
         Pion.Couleur couleurOpposee;
         if (getCouleurPionSurTuile(p_tuile) == Pion.Couleur.BLANC) {
             couleurOpposee = Pion.Couleur.NOIR;
@@ -842,23 +842,33 @@ public class Damier {
      * faux si il reste encore des pions de la couleur
      */
     public boolean verifierResteAucunPion(Pion.Couleur p_couleur) {
+        LinkedList<Tuile> listtmp = new LinkedList<Tuile>();
+        detecterNbMovement(getTuile(4,5), listtmp);
         return (compterCouleur(p_couleur) == 0);
+
     }
 
+    LinkedList<LinkedList<Tuile>> listeMove = new LinkedList<LinkedList<Tuile>>();
     /**
      * retourne le nombre de mouvement maximal que peut faire un pion sur une tuile
      * @param p_tuile
      * @return
      */
-    public int detecterNbMovement(Tuile p_tuile, int p_nbMouvement){
-        //Haut gauche
+    public void detecterNbMovement(Tuile p_tuile, LinkedList<Tuile> p_mouvementFait){
+        //Haut gauche TODO
+        if(p_mouvementFait == null){
+            p_mouvementFait.add(p_tuile);
+        }
         if (p_tuile != null) {
+            boolean Arrete = true;
             if(p_tuile.getTuileHautGauche() != null && p_tuile.getTuileHautGauche().getTuileHautGauche() != null){
                 if(!estVideTuile(p_tuile.getTuileHautGauche())){
                     if(estVideTuile(p_tuile.getTuileHautGauche().getTuileHautGauche())){
                         if(getCouleurPionSurTuile(p_tuile) != getCouleurPionSurTuile(p_tuile.getTuileHautGauche())){
-                            p_nbMouvement ++;
-                            p_nbMouvement = detecterNbMovement(p_tuile.getTuileHautGauche().getTuileHautGauche(), p_nbMouvement);
+                            Arrete = false;
+                            LinkedList<Tuile> listtmp = p_mouvementFait;
+                            listtmp.add(p_tuile.getTuileHautGauche().getTuileHautGauche());
+                            detecterNbMovement(p_tuile.getTuileHautGauche().getTuileHautGauche(), listtmp);
                         }
                     }
                 }
@@ -869,8 +879,10 @@ public class Damier {
                 if(!estVideTuile(p_tuile.getTuileHautDroite())){
                     if(estVideTuile(p_tuile.getTuileHautDroite().getTuileHautDroite())){
                         if(getCouleurPionSurTuile(p_tuile) != getCouleurPionSurTuile(p_tuile.getTuileHautDroite())){
-                            p_nbMouvement ++;
-                            p_nbMouvement = detecterNbMovement(p_tuile.getTuileHautDroite().getTuileHautDroite(), p_nbMouvement);
+                            Arrete = false;
+                            LinkedList<Tuile> listtmp = p_mouvementFait;
+                            listtmp.add(p_tuile.getTuileHautDroite().getTuileHautDroite());
+                            detecterNbMovement(p_tuile.getTuileHautDroite().getTuileHautDroite(), listtmp);
                         }
                     }
                 }
@@ -881,8 +893,10 @@ public class Damier {
                 if(!estVideTuile(p_tuile.getTuileBasDroite())){
                     if(estVideTuile(p_tuile.getTuileBasDroite().getTuileBasDroite())){
                         if(getCouleurPionSurTuile(p_tuile) != getCouleurPionSurTuile(p_tuile.getTuileBasDroite())){
-                            p_nbMouvement ++;
-                            p_nbMouvement = detecterNbMovement(p_tuile.getTuileBasDroite().getTuileBasDroite(), p_nbMouvement);
+                            Arrete = false;
+                            LinkedList<Tuile> listtmp = p_mouvementFait;
+                            listtmp.add(p_tuile.getTuileBasDroite().getTuileBasDroite());
+                            detecterNbMovement(p_tuile.getTuileBasDroite().getTuileBasDroite(), listtmp);
                         }
                     }
                 }
@@ -893,16 +907,20 @@ public class Damier {
                 if(!estVideTuile(p_tuile.getTuileBasGauche())){
                     if(estVideTuile(p_tuile.getTuileBasGauche().getTuileBasGauche())){
                         if(getCouleurPionSurTuile(p_tuile) != getCouleurPionSurTuile(p_tuile.getTuileBasGauche())){
-                            p_nbMouvement ++;
-                            p_nbMouvement = detecterNbMovement(p_tuile.getTuileBasGauche().getTuileBasGauche(), p_nbMouvement);
+                            Arrete = false;
+                            LinkedList<Tuile> listtmp = p_mouvementFait;
+                            listtmp.add(p_tuile.getTuileBasDroite().getTuileBasDroite());
+                            detecterNbMovement(p_tuile.getTuileBasDroite().getTuileBasDroite(), listtmp);
                         }
                     }
                 }
             }
+            if(Arrete){
+                listeMove.add(p_mouvementFait);
+            }
 
         }
 
-        return p_nbMouvement;
     }
 
     /**
