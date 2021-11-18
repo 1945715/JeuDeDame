@@ -124,6 +124,20 @@ public class TestDamier {
 
     }
 
+    @Test
+    public void testNbMouvementMax(){
+        Damier damierTest = Damier.getInstance();
+        damierTest.initialiser();
+        damierTest.detecterNbMovementPion(damierTest.getTuile(4,5), new LinkedList<Tuile>());
+        LinkedList<Tuile> listTest = new LinkedList<Tuile>();
+        assertTrue(damierTest.listeMove.get(0).contains(damierTest.getTuile(4,5)));
+        assertTrue(damierTest.listeMove.get(0).contains(damierTest.getTuile(2,3)));
+
+        assertTrue(damierTest.listeMove.get(1).contains(damierTest.getTuile(6,3)));
+        assertTrue(damierTest.listeMove.get(1).contains(damierTest.getTuile(8,1)));
+    }
+
+
     /**
      * Test verifiant qu'une tuile est vide
      */

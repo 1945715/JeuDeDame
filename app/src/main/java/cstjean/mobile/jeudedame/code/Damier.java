@@ -1,6 +1,5 @@
 package cstjean.mobile.jeudedame.code;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -363,268 +362,10 @@ public class Damier {
      * @return une liste contenant les tuiles où le pion peut se déaplacer
      */
     public LinkedList<Tuile> obtenirCasesDisponibles(Tuile p_tuile) {
-        Pion.Couleur couleurOpposee;
-        if (getCouleurPionSurTuile(p_tuile) == Pion.Couleur.BLANC) {
-            couleurOpposee = Pion.Couleur.NOIR;
-        } else {
-            couleurOpposee = Pion.Couleur.BLANC;
-        }
-        LinkedList<Tuile> casePossible = new LinkedList<>();
-        boolean estBlanc = (getCouleurPionSurTuile(p_tuile) == Pion.Couleur.BLANC);
-        boolean estDame = m_tuiles.get(p_tuile) instanceof Dame;
-
-        //Haut Gauche
-        if (estDame || estBlanc) {
-            boolean aManger = false;
-
-            int i = 0;
-            boolean fin = false;
 
 
-            while (!fin) {
-                i++;
-                int xtemporaire = p_tuile.getX() - i;
-                int yTemporaire = p_tuile.getY() - i;
-                if (!estDame) {
-                    if (estVideTuile(new Tuile(xtemporaire, yTemporaire))) {
-                        if (i == 1)
-                            casePossible.add(new Tuile(xtemporaire, yTemporaire));
-                    }
-                    if (i == 2) {
-                        if (!estVideTuile(new Tuile(p_tuile.getX() - 1,
-                                p_tuile.getY() - 1)) &&
-                                estVideTuile(new Tuile(xtemporaire, yTemporaire))) {
-                            if (getCouleurPionSurTuile(new Tuile(p_tuile.getX() - 1,
-                                    p_tuile.getY() - 1)) != Pion.Couleur.BLANC) {
-                                casePossible.add(new Tuile(xtemporaire, yTemporaire));
-                            }
-                        }
-                        fin = true;
-                    }
-                } else {
-                    if (estVideTuile(new Tuile(xtemporaire, yTemporaire))) {
-                        casePossible.add(new Tuile(xtemporaire, yTemporaire));
-                        aManger = false;
-                    } else if (!aManger && estVideTuile(new Tuile(xtemporaire - 1,
-                            yTemporaire - 1))) {
-                        if (couleurOpposee ==
-                                getCouleurPionSurTuile(new Tuile(xtemporaire, yTemporaire))) {
-                            aManger = true;
-                        } else {
-                            fin = true;
-                        }
 
-                    } else {
-                        fin = true;
-                    }
-                }
-
-                if (xtemporaire < 0 || yTemporaire < 0) {
-                    fin = true;
-                }
-
-            }
-
-
-        }
-
-        if(!estDame || !estBlanc){
-            int xtemporaire = p_tuile.getX() - 2;
-            int yTemporaire = p_tuile.getY() - 2;
-
-            if (!estVideTuile(new Tuile(p_tuile.getX() - 1,
-                    p_tuile.getY() - 1)) &&
-                    estVideTuile(new Tuile(xtemporaire, yTemporaire))) {
-                if (getCouleurPionSurTuile(new Tuile(p_tuile.getX() - 1,
-                        p_tuile.getY() - 1)) == Pion.Couleur.BLANC) {
-                    casePossible.add(new Tuile(xtemporaire, yTemporaire));
-                }
-            }
-        }
-        //Haut Droite
-        if (estBlanc || estDame) {
-            boolean aManger = false;
-            int i = 0;
-            boolean fin = false;
-
-            while (!fin) {
-                i++;
-                int xtemporaire = p_tuile.getX() + i;
-                int yTemporaire = p_tuile.getY() - i;
-                if (!estDame) {
-                    if (estVideTuile(new Tuile(xtemporaire, yTemporaire))) {
-                        if (i == 1)
-                            casePossible.add(new Tuile(xtemporaire, yTemporaire));
-                    }
-                    if (i == 2) {
-                        if (!estVideTuile(new Tuile(p_tuile.getX() + 1,
-                                p_tuile.getY() - 1)) && estVideTuile(new Tuile(xtemporaire,
-                                yTemporaire))) {
-                            if (getCouleurPionSurTuile(new Tuile(p_tuile.getX() + 1,
-                                    p_tuile.getY() - 1)) != Pion.Couleur.BLANC) {
-                                casePossible.add(new Tuile(xtemporaire, yTemporaire));
-                            }
-                        }
-                        fin = true;
-                    }
-                } else {
-                    if (estVideTuile(new Tuile(xtemporaire, yTemporaire))) {
-                        casePossible.add(new Tuile(xtemporaire, yTemporaire));
-                        aManger = false;
-                    } else if (!aManger && estVideTuile(new Tuile(xtemporaire + 1,
-                            yTemporaire - 1))) {
-                        if (couleurOpposee == getCouleurPionSurTuile(new Tuile(xtemporaire,
-                                yTemporaire))) {
-                            aManger = true;
-                        } else {
-                            fin = true;
-                        }
-                    } else {
-                        fin = true;
-                    }
-                }
-                if (xtemporaire > 9 || yTemporaire < 0) {
-                    fin = true;
-                }
-            }
-        }
-        if (!estBlanc || estDame){
-            int xtemporaire = p_tuile.getX() + 2;
-            int yTemporaire = p_tuile.getY() - 2;
-            if (!estVideTuile(new Tuile(p_tuile.getX() + 1,
-                    p_tuile.getY() - 1)) && estVideTuile(new Tuile(xtemporaire,
-                    yTemporaire))) {
-                if (getCouleurPionSurTuile(new Tuile(p_tuile.getX() + 1,
-                        p_tuile.getY() - 1)) != Pion.Couleur.NOIR) {
-                    casePossible.add(new Tuile(xtemporaire, yTemporaire));
-                }
-            }
-        }
-
-            //Bas Droite
-        if (estDame || !estBlanc) {
-            boolean aManger = false;
-            int i = 0;
-            boolean fin = false;
-            while (!fin) {
-                i++;
-                int xtemporaire = p_tuile.getX() + i;
-                int yTemporaire = p_tuile.getY() + i;
-                if (!estDame) {
-                    if (estVideTuile(new Tuile(xtemporaire, yTemporaire))) {
-                        if (i == 1)
-                            casePossible.add(new Tuile(xtemporaire, yTemporaire));
-                    }
-                    if (i == 2) {
-                        if (!estVideTuile(new Tuile(p_tuile.getX() + 1,
-                                p_tuile.getY() + 1)) &&
-                                estVideTuile(new Tuile(xtemporaire, yTemporaire))) {
-                            if (getCouleurPionSurTuile(new Tuile(p_tuile.getX() + 1,
-                                    p_tuile.getY() + 1)) != Pion.Couleur.NOIR) {
-                                casePossible.add(new Tuile(xtemporaire, yTemporaire));
-                            }
-                        }
-                        fin = true;
-                    }
-                } else {
-                    if (estVideTuile(new Tuile(xtemporaire, yTemporaire))) {
-                        casePossible.add(new Tuile(xtemporaire, yTemporaire));
-                        aManger = false;
-                    } else if (!aManger && estVideTuile(new Tuile(xtemporaire + 1,
-                            yTemporaire + 1))) {
-                        if (couleurOpposee == getCouleurPionSurTuile(new Tuile(xtemporaire,
-                                yTemporaire))) {
-                            aManger = true;
-                        } else {
-                            fin = true;
-                        }
-                    } else {
-                        fin = true;
-                    }
-                }
-                if (xtemporaire > 9 || yTemporaire > 9) {
-                    fin = true;
-                }
-            }
-        }
-        if(!estDame || estBlanc){
-            int xtemporaire = p_tuile.getX() + 2;
-            int yTemporaire = p_tuile.getY() + 2;
-            if (xtemporaire < 9 && yTemporaire < 9){
-                if (!estVideTuile(new Tuile(p_tuile.getX() + 1,
-                        p_tuile.getY() + 1)) &&
-                        estVideTuile(new Tuile(xtemporaire, yTemporaire))) {
-                    if (getCouleurPionSurTuile(new Tuile(p_tuile.getX() + 1,
-                            p_tuile.getY() + 1)) != Pion.Couleur.BLANC) {
-                        casePossible.add(new Tuile(xtemporaire, yTemporaire));
-                    }
-                }
-            }
-
-        }
-
-
-        //Bas Gauche
-        if (!estBlanc || estDame) {
-            boolean aManger = false;
-            int i = 0;
-            boolean fin = false;
-            while (!fin) {
-                i++;
-                int xtemporaire = p_tuile.getX() - i;
-                int yTemporaire = p_tuile.getY() + i;
-                if (!estDame) {
-                    if (estVideTuile(new Tuile(xtemporaire, yTemporaire))) {
-                        if (i == 1)
-                            casePossible.add(new Tuile(xtemporaire, yTemporaire));
-                    }
-                    if (i == 2) {
-                        if (!estVideTuile(new Tuile(p_tuile.getX() - 1,
-                                p_tuile.getY() + 1)) &&
-                                estVideTuile(new Tuile(xtemporaire, yTemporaire))) {
-                            if (getCouleurPionSurTuile(new Tuile(p_tuile.getX() - 1,
-                                    p_tuile.getY() + 1)) != Pion.Couleur.NOIR) {
-                                casePossible.add(new Tuile(xtemporaire, yTemporaire));
-                            }
-                        }
-                        fin = true;
-                    }
-                } else {
-                    if (estVideTuile(new Tuile(xtemporaire, yTemporaire))) {
-                        casePossible.add(new Tuile(xtemporaire, yTemporaire));
-                        aManger = false;
-                    } else if (!aManger && estVideTuile(new Tuile(xtemporaire - 1,
-                            yTemporaire + 1))) {
-                        if (couleurOpposee == getCouleurPionSurTuile(new Tuile(xtemporaire,
-                                yTemporaire))) {
-                            aManger = true;
-                        } else {
-                            fin = true;
-                        }
-                    } else {
-                        fin = true;
-                    }
-                }
-
-                if (xtemporaire < 0 || yTemporaire > 9) {
-                    fin = true;
-                }
-            }
-        }
-        if(estBlanc || !estDame){
-            int xtemporaire = p_tuile.getX() - 2;
-            int yTemporaire = p_tuile.getY() + 2;
-            if (!estVideTuile(new Tuile(p_tuile.getX() - 1,
-                    p_tuile.getY() + 1)) &&
-                    estVideTuile(new Tuile(xtemporaire, yTemporaire))) {
-                if (getCouleurPionSurTuile(new Tuile(p_tuile.getX() - 1,
-                        p_tuile.getY() + 1)) != Pion.Couleur.BLANC) {
-                    casePossible.add(new Tuile(xtemporaire, yTemporaire));
-                }
-            }
-        }
-
-        return casePossible;
+        return null;
     }
 
 
@@ -635,156 +376,45 @@ public class Damier {
      * @param p_choix la tuile où on veut se déplacer
      */
     public void gererDeplacement(Tuile p_tuile, Tuile p_choix) {
-
+        filtrerListe();
         Pion pion = getPion(p_tuile);
-
-        if (pion == null) {
-            throw new IllegalArgumentException();
-        }
-
-        if (getPion(p_tuile).getCouleur() == Pion.Couleur.NOIR && p_tuile.getY() >= 8) {
-            transformerPion(p_tuile);
-        }
-        if (getPion(p_tuile).getCouleur() == Pion.Couleur.BLANC && p_tuile.getY() <= 1) {
-            transformerPion(p_tuile);
-        }
-
-        LinkedList<Tuile> casePossible = obtenirCasesDisponibles(p_tuile);
-
-        Pion.Couleur couleurOpposee;
-
-        if (pion.estBlanc()) {
-            couleurOpposee = Pion.Couleur.NOIR;
-        } else {
-            couleurOpposee = Pion.Couleur.BLANC;
-        }
-
-        if (casePossible.contains(p_choix)) {
-
-            if (pion instanceof Dame) {
-                // Haut gauche
-                if (p_tuile.getY() > p_choix.getY() && p_tuile.getX() > p_choix.getX()) {
-                    for (int i = 0; i < p_tuile.getX() - p_choix.getX(); i++) {
-                        supprimerPion(new Tuile(p_tuile.getX() - i, p_tuile.getY() - i));
-
-                    }
-                    deplacerPion(pion, p_tuile, p_choix);
-                }
-                //Haut droite
-                if (p_tuile.getY() > p_choix.getY() && p_tuile.getX() < p_choix.getX()) {
-                    for (int i = 0; i < p_choix.getX() - p_tuile.getX(); i++) {
-                        supprimerPion(new Tuile(p_tuile.getX() + i, p_tuile.getY() - i));
-
-                    }
-                    deplacerPion(pion, p_tuile, p_choix);
-                }
-                //Bas gauche
-                if (p_tuile.getY() < p_choix.getY() && p_tuile.getX() > p_choix.getX()) {
-                    for (int i = 0; i < p_tuile.getX() - p_choix.getX(); i++) {
-                        supprimerPion(new Tuile(p_tuile.getX() - i, p_tuile.getY() + i));
-
-                    }
-                    deplacerPion(pion, p_tuile, p_choix);
-                }
-                //Bas Droite
-                if (p_tuile.getY() < p_choix.getY() && p_tuile.getX() < p_choix.getX()) {
-                    for (int i = 0; i < p_choix.getX() - p_tuile.getX(); i++) {
-                        supprimerPion(new Tuile(p_tuile.getX() + i, p_tuile.getY() + i));
-
-                    }
-                    deplacerPion(pion, p_tuile, p_choix);
-                }
-            } else {
-                if (pion.estBlanc() ) {
-                    if( p_choix.getY() < p_tuile.getY()){
-                        if (p_choix.getY() + 2 == p_tuile.getY()) {
-                            if (p_choix.getX() + 2 == p_tuile.getX()) {
-                                if ((!estVideTuile(new Tuile(p_choix.getX() + 1,
-                                        p_choix.getY() + 1)))
-                                        && couleurOpposee ==
-                                        getCouleurPionSurTuile(new Tuile(p_tuile.getX() - 1,
-                                                p_tuile.getY() - 1))) {
-                                    supprimerPion(new Tuile(p_tuile.getX() - 1,
-                                            p_tuile.getY() - 1));
-                                    deplacerPion(pion, p_tuile, p_choix);
-                                }
-                            } else if (p_choix.getX() - 2 == p_tuile.getX()) {
-                                if ((!estVideTuile(new Tuile(p_choix.getX() - 1,
-                                        p_choix.getY() + 1)))
-                                        && couleurOpposee ==
-                                        getCouleurPionSurTuile(new Tuile(p_tuile.getX() + 1,
-                                                p_tuile.getY() - 1))) {
-                                    supprimerPion(new Tuile(p_tuile.getX() + 1,
-                                            p_tuile.getY() - 1));
-                                    deplacerPion(pion, p_tuile, p_choix);
-                                }
-                            }
-                        }
-                        else {
-                            if (estVideTuile(p_choix)) {
-                                deplacerPion(pion, p_tuile, p_choix);
-                            }
-                        }
-                    }
-                    else if (p_choix.getY() > p_tuile.getY()){
-                        if(p_choix.getX()  < p_tuile.getX()){
-                            supprimerPion(new Tuile(p_tuile.getX() - 1,
-                                    p_tuile.getY() + 1));
+        for (LinkedList<Tuile> liste: listeMove) {
+            if(!estVideTuile(p_tuile)){
+                if(!(getPion(p_tuile) instanceof Dame )){
+                    if(liste.contains(p_tuile) && liste.contains(p_choix)){
+                        //Haut Gauche
+                        if(p_tuile.getTuileHautGauche() == p_choix){
                             deplacerPion(pion, p_tuile, p_choix);
                         }
-                        if(p_choix.getX() > p_tuile.getX()){
-                            supprimerPion(new Tuile(p_tuile.getX() + 1,
-                                    p_tuile.getY() + 1));
+                        else if(p_tuile.getTuileHautGauche().getTuileHautGauche() == p_choix){
+                            supprimerPion(p_tuile.getTuileHautGauche());
+                            deplacerPion(pion, p_tuile, p_choix);
+                        }//Haut Droite
+                        else if(p_tuile.getTuileHautDroite() == p_choix){
                             deplacerPion(pion, p_tuile, p_choix);
                         }
-
-                    }
-
-                } else if (pion.estNoir() ) {
-                    if(p_choix.getY() > p_tuile.getY()){
-                        if (p_choix.getY() - 2 == p_tuile.getY()) {
-                            if (p_choix.getX() + 2 == p_tuile.getX()) {
-                                if ((!estVideTuile(new Tuile(p_choix.getX() + 1,
-                                        p_choix.getY() - 1)))
-                                        && couleurOpposee ==
-                                        getCouleurPionSurTuile(new Tuile(p_tuile.getX() - 1,
-                                                p_tuile.getY() + 1))) {
-                                    supprimerPion(new Tuile(p_tuile.getX() - 1,
-                                            p_tuile.getY() + 1));
-                                    deplacerPion(pion, p_tuile, p_choix);
-                                }
-                            } else if (p_choix.getX() - 2 == p_tuile.getX()) {
-                                if ((!estVideTuile(new Tuile(p_choix.getX() - 1,
-                                        p_choix.getY() - 1)))
-                                        && couleurOpposee ==
-                                        getCouleurPionSurTuile(new Tuile(p_tuile.getX() + 1,
-                                                p_tuile.getY() + 1))) {
-                                    supprimerPion(new Tuile(p_tuile.getX() + 1,
-                                            p_tuile.getY() + 1));
-                                    deplacerPion(pion, p_tuile, p_choix);
-                                }
-                            }
-                        } else {
-                            if (estVideTuile(p_choix)) {
-                                deplacerPion(pion, p_tuile, p_choix);
-                            }
-                        }
-                    }
-                    else{
-                        if(p_choix.getX()  < p_tuile.getX()){
-                            supprimerPion(new Tuile(p_tuile.getX() - 1,
-                                    p_tuile.getY() - 1));
+                        else if(p_tuile.getTuileHautDroite().getTuileHautDroite() == p_choix){
+                            supprimerPion(p_tuile.getTuileHautDroite());
+                            deplacerPion(pion, p_tuile, p_choix);
+                        }//Bas Droite
+                        else if(p_tuile.getTuileBasDroite() == p_choix){
                             deplacerPion(pion, p_tuile, p_choix);
                         }
-                        if(p_choix.getX() > p_tuile.getX()){
-                            supprimerPion(new Tuile(p_tuile.getX() + 1,
-                                    p_tuile.getY() - 1));
+                        else if(p_tuile.getTuileBasDroite().getTuileBasDroite() == p_choix){
+                            supprimerPion(p_tuile.getTuileBasDroite());
+                            deplacerPion(pion, p_tuile, p_choix);
+                        }//Bas Droite
+                        else if(p_tuile.getTuileBasGauche() == p_choix){
+                            deplacerPion(pion, p_tuile, p_choix);
+                        }
+                        else if(p_tuile.getTuileBasGauche().getTuileBasGauche() == p_choix){
+                            supprimerPion(p_tuile.getTuileBasGauche());
                             deplacerPion(pion, p_tuile, p_choix);
                         }
                     }
-
                 }
             }
+
         }
 
     }
@@ -843,20 +473,21 @@ public class Damier {
      */
     public boolean verifierResteAucunPion(Pion.Couleur p_couleur) {
         LinkedList<Tuile> listtmp = new LinkedList<Tuile>();
-        detecterNbMovement(getTuile(4,5), listtmp);
+        detecterNbMovementPion(getTuile(4,5), listtmp);
         return (compterCouleur(p_couleur) == 0);
 
     }
 
-    LinkedList<LinkedList<Tuile>> listeMove = new LinkedList<LinkedList<Tuile>>();
+    public LinkedList<LinkedList<Tuile>> listeMove = new LinkedList<LinkedList<Tuile>>();
+
     /**
      * retourne le nombre de mouvement maximal que peut faire un pion sur une tuile
      * @param p_tuile
      * @return
      */
-    public void detecterNbMovement(Tuile p_tuile, LinkedList<Tuile> p_mouvementFait){
+    public void detecterNbMovementPion(Tuile p_tuile, LinkedList<Tuile> p_mouvementFait){
         //Haut gauche TODO
-        if(p_mouvementFait == null){
+        if(0 == p_mouvementFait.size()){
             p_mouvementFait.add(p_tuile);
         }
         if (p_tuile != null) {
@@ -866,9 +497,10 @@ public class Damier {
                     if(estVideTuile(p_tuile.getTuileHautGauche().getTuileHautGauche())){
                         if(getCouleurPionSurTuile(p_tuile) != getCouleurPionSurTuile(p_tuile.getTuileHautGauche())){
                             Arrete = false;
-                            LinkedList<Tuile> listtmp = p_mouvementFait;
+                            LinkedList<Tuile> listtmp = new LinkedList<Tuile>();
+                            listtmp.addAll(p_mouvementFait);
                             listtmp.add(p_tuile.getTuileHautGauche().getTuileHautGauche());
-                            detecterNbMovement(p_tuile.getTuileHautGauche().getTuileHautGauche(), listtmp);
+                            detecterNbMovementPion(p_tuile.getTuileHautGauche().getTuileHautGauche(), listtmp);
                         }
                     }
                 }
@@ -878,11 +510,12 @@ public class Damier {
             if(p_tuile.getTuileHautDroite() != null && p_tuile.getTuileHautDroite().getTuileHautDroite() != null){
                 if(!estVideTuile(p_tuile.getTuileHautDroite())){
                     if(estVideTuile(p_tuile.getTuileHautDroite().getTuileHautDroite())){
-                        if(getCouleurPionSurTuile(p_tuile) != getCouleurPionSurTuile(p_tuile.getTuileHautDroite())){
+                        if(getCouleurPionSurTuile(p_mouvementFait.get(0)) != getCouleurPionSurTuile(p_tuile.getTuileHautDroite())){
                             Arrete = false;
-                            LinkedList<Tuile> listtmp = p_mouvementFait;
+                            LinkedList<Tuile> listtmp = new LinkedList<Tuile>();
+                            listtmp.addAll(p_mouvementFait);
                             listtmp.add(p_tuile.getTuileHautDroite().getTuileHautDroite());
-                            detecterNbMovement(p_tuile.getTuileHautDroite().getTuileHautDroite(), listtmp);
+                            detecterNbMovementPion(p_tuile.getTuileHautDroite().getTuileHautDroite(), listtmp);
                         }
                     }
                 }
@@ -894,9 +527,10 @@ public class Damier {
                     if(estVideTuile(p_tuile.getTuileBasDroite().getTuileBasDroite())){
                         if(getCouleurPionSurTuile(p_tuile) != getCouleurPionSurTuile(p_tuile.getTuileBasDroite())){
                             Arrete = false;
-                            LinkedList<Tuile> listtmp = p_mouvementFait;
+                            LinkedList<Tuile> listtmp = new LinkedList<Tuile>();
+                            listtmp.addAll(p_mouvementFait);
                             listtmp.add(p_tuile.getTuileBasDroite().getTuileBasDroite());
-                            detecterNbMovement(p_tuile.getTuileBasDroite().getTuileBasDroite(), listtmp);
+                            detecterNbMovementPion(p_tuile.getTuileBasDroite().getTuileBasDroite(), listtmp);
                         }
                     }
                 }
@@ -908,19 +542,83 @@ public class Damier {
                     if(estVideTuile(p_tuile.getTuileBasGauche().getTuileBasGauche())){
                         if(getCouleurPionSurTuile(p_tuile) != getCouleurPionSurTuile(p_tuile.getTuileBasGauche())){
                             Arrete = false;
-                            LinkedList<Tuile> listtmp = p_mouvementFait;
+                            LinkedList<Tuile> listtmp = new LinkedList<Tuile>();
+                            listtmp.addAll(p_mouvementFait);
                             listtmp.add(p_tuile.getTuileBasDroite().getTuileBasDroite());
-                            detecterNbMovement(p_tuile.getTuileBasDroite().getTuileBasDroite(), listtmp);
+                            detecterNbMovementPion(p_tuile.getTuileBasDroite().getTuileBasDroite(), listtmp);
                         }
                     }
                 }
             }
             if(Arrete){
-                listeMove.add(p_mouvementFait);
+                if(p_mouvementFait.size() == 1){
+                    //Haut Droite
+                    if(getCouleurPionSurTuile(p_tuile) == Pion.Couleur.BLANC){
+                        if(estVideTuile(p_tuile.getTuileHautDroite())){
+                            LinkedList<Tuile> listtmp = new LinkedList<Tuile>();
+                            listtmp.add(p_tuile);
+                            listtmp.add(p_tuile.getTuileHautDroite());
+                            listeMove.add(listtmp);
+                        }
+                    }
+                    //Haut Gauche
+                    if(getCouleurPionSurTuile(p_tuile) == Pion.Couleur.BLANC){
+                        if(estVideTuile(p_tuile.getTuileHautGauche())){
+                            LinkedList<Tuile> listtmp = new LinkedList<Tuile>();
+                            listtmp.add(p_tuile);
+                            listtmp.add(p_tuile.getTuileHautGauche());
+                            listeMove.add(listtmp);
+                        }
+                    }
+                    //Bas Droite
+                    if(getCouleurPionSurTuile(p_tuile) == Pion.Couleur.NOIR){
+                        if(estVideTuile(p_tuile.getTuileBasDroite())){
+                            LinkedList<Tuile> listtmp = new LinkedList<Tuile>();
+                            listtmp.add(p_tuile);
+                            listtmp.add(p_tuile.getTuileBasDroite());
+                            listeMove.add(listtmp);
+                        }
+                    }
+                    //Bas Gauche
+                    if(getCouleurPionSurTuile(p_tuile) == Pion.Couleur.NOIR){
+                        if(estVideTuile(p_tuile.getTuileBasGauche())){
+                            LinkedList<Tuile> listtmp = new LinkedList<Tuile>();
+                            listtmp.add(p_tuile);
+                            listtmp.add(p_tuile.getTuileBasGauche());
+                            listeMove.add(listtmp);
+                        }
+                    }
+                }
+                else{
+                    listeMove.add(p_mouvementFait);
+                }
             }
-
         }
 
+    }
+    public void detecterNbDeplacementDame(Tuile p_tuile, LinkedList<Tuile> p_mouvementFait, Damier p_damier){
+        Tuile tuileTmp = p_tuile;
+        /* HautGauche */
+        while(true){
+
+        }
+    }
+
+
+    public void filtrerListe(){
+        int nbMax = 1;
+        LinkedList<LinkedList<Tuile>> listTmp = new LinkedList<>();
+        for (LinkedList liste:
+             listeMove) {
+            if(liste.size() > nbMax){
+                listTmp.clear();
+                listTmp.add(liste);
+            }
+            else if(liste.size() == nbMax){
+                listTmp.add(liste);
+            }
+        }
+        listeMove = listTmp;
     }
 
     /**
