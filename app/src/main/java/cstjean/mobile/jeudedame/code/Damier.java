@@ -596,11 +596,29 @@ public class Damier {
         }
 
     }
+    public LinkedList<LinkedList<Tuile>> listeMoveDame = new LinkedList<LinkedList<Tuile>>();
+
     public void detecterNbDeplacementDame(Tuile p_tuile, LinkedList<Tuile> p_mouvementFait, Damier p_damier){
         Tuile tuileTmp = p_tuile;
         /* HautGauche */
         while(true){
-
+            try{
+                LinkedList<Tuile> listTmp = new LinkedList<Tuile>();
+                listTmp.addAll(p_mouvementFait);
+                if(p_damier.estVideTuile(tuileTmp.getTuileHautGauche())){
+                    listTmp.add(tuileTmp);
+                }
+                else if(p_damier.estVideTuile(tuileTmp.getTuileHautGauche().getTuileHautGauche())){
+                    p_damier.supprimerPion(tuileTmp);
+                    p_damier.deplacerPion(getPion(tuileTmp), p_tuile, tuileTmp.getTuileHautGauche());
+                    detecterNbDeplacementDame(tuileTmp.getTuileHautGauche(), listTmp, p_damier);
+                }
+                tuileTmp = tuileTmp.getTuileHautGauche();
+                listeMoveDame.add(listTmp);
+            }
+            catch (NullPointerException e){
+                break;
+            }
         }
     }
 
