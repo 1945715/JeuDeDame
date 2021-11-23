@@ -600,6 +600,10 @@ public class Damier {
     public LinkedList<LinkedList<Tuile>> listeMoveDame = new LinkedList<LinkedList<Tuile>>();
 
     public void detecterNbDeplacementDame(Tuile p_tuile, LinkedList<Tuile> p_mouvementFait, Damier p_damier){
+        if(p_mouvementFait.size() == 0){
+            p_mouvementFait.add(p_tuile);
+        }
+
         Tuile tuileTmp = p_tuile;
         /* HautGauche */
         while(true){
