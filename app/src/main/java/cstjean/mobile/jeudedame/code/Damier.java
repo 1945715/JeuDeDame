@@ -596,6 +596,7 @@ public class Damier {
         }
 
     }
+
     public LinkedList<LinkedList<Tuile>> listeMoveDame = new LinkedList<LinkedList<Tuile>>();
 
     public void detecterNbDeplacementDame(Tuile p_tuile, LinkedList<Tuile> p_mouvementFait, Damier p_damier){
@@ -609,9 +610,12 @@ public class Damier {
                     listTmp.add(tuileTmp);
                 }
                 else if(p_damier.estVideTuile(tuileTmp.getTuileHautGauche().getTuileHautGauche())){
-                    p_damier.supprimerPion(tuileTmp);
-                    p_damier.deplacerPion(getPion(tuileTmp), p_tuile, tuileTmp.getTuileHautGauche());
+                    p_damier.supprimerPion(tuileTmp.getTuileHautGauche());
+                    p_damier.deplacerPion(getPion(p_tuile), p_tuile, tuileTmp.getTuileHautGauche().getTuileHautGauche());
                     detecterNbDeplacementDame(tuileTmp.getTuileHautGauche(), listTmp, p_damier);
+                }
+                else{
+                    break;
                 }
                 tuileTmp = tuileTmp.getTuileHautGauche();
                 listeMoveDame.add(listTmp);
@@ -620,6 +624,84 @@ public class Damier {
                 break;
             }
         }
+
+        tuileTmp = p_tuile;
+        /* HautDroite*/
+        while(true){
+            try{
+                LinkedList<Tuile> listTmp = new LinkedList<Tuile>();
+                listTmp.addAll(p_mouvementFait);
+                if(p_damier.estVideTuile(tuileTmp.getTuileHautDroite())){
+                    listTmp.add(tuileTmp);
+                }
+                else if(p_damier.estVideTuile(tuileTmp.getTuileHautDroite().getTuileHautDroite())){
+                    p_damier.supprimerPion(tuileTmp.getTuileHautDroite());
+                    p_damier.deplacerPion(getPion(p_tuile), p_tuile, tuileTmp.getTuileHautDroite().getTuileHautDroite());
+                    detecterNbDeplacementDame(tuileTmp.getTuileHautDroite(), listTmp, p_damier);
+                }
+                else{
+                    break;
+                }
+                tuileTmp = tuileTmp.getTuileHautDroite();
+                listeMoveDame.add(listTmp);
+            }
+            catch (NullPointerException e){
+                break;
+            }
+        }
+
+        tuileTmp = p_tuile;
+        /* BasGauche*/
+        while(true){
+            try{
+                LinkedList<Tuile> listTmp = new LinkedList<Tuile>();
+                listTmp.addAll(p_mouvementFait);
+                if(p_damier.estVideTuile(tuileTmp.getTuileBasGauche())){
+                    listTmp.add(tuileTmp);
+                }
+                else if(p_damier.estVideTuile(tuileTmp.getTuileBasGauche().getTuileBasGauche())){
+                    p_damier.supprimerPion(tuileTmp.getTuileBasGauche());
+                    p_damier.deplacerPion(getPion(p_tuile), p_tuile, tuileTmp.getTuileBasGauche().getTuileBasGauche());
+                    detecterNbDeplacementDame(tuileTmp.getTuileBasGauche(), listTmp, p_damier);
+                }
+                else{
+                    break;
+                }
+                tuileTmp = tuileTmp.getTuileBasGauche();
+                listeMoveDame.add(listTmp);
+            }
+            catch (NullPointerException e){
+                break;
+            }
+        }
+
+
+        tuileTmp = p_tuile;
+        /* BasDroit*/
+        while(true){
+            try{
+                LinkedList<Tuile> listTmp = new LinkedList<Tuile>();
+                listTmp.addAll(p_mouvementFait);
+                if(p_damier.estVideTuile(tuileTmp.getTuileBasDroite())){
+                    listTmp.add(tuileTmp);
+                }
+                else if(p_damier.estVideTuile(tuileTmp.getTuileBasDroite().getTuileBasDroite())){
+                    p_damier.supprimerPion(tuileTmp.getTuileBasDroite());
+                    p_damier.deplacerPion(getPion(p_tuile), p_tuile, tuileTmp.getTuileBasDroite().getTuileBasDroite());
+                    detecterNbDeplacementDame(tuileTmp.getTuileBasDroite(), listTmp, p_damier);
+                }
+                else{
+                    break;
+                }
+                tuileTmp = tuileTmp.getTuileBasDroite();
+                listeMoveDame.add(listTmp);
+            }
+            catch (NullPointerException e){
+                break;
+            }
+        }
+
+
     }
 
 
