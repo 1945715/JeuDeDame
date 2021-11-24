@@ -6,7 +6,7 @@ package cstjean.mobile.jeudedame.code;
  * @author Sebastien Fortier
  * @author Yoan Gauthier
  */
-public class Pion {
+public class Pion implements Cloneable{
 
     /**
      * Enum des couleurs possibles pour le pion
@@ -57,6 +57,11 @@ public class Pion {
      */
     public boolean estBlanc() {
         return this.getCouleur().equals(Couleur.BLANC);
+    }
+
+    public Pion clone() throws CloneNotSupportedException
+    {
+        return super.clone();
     }
 
 }

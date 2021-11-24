@@ -8,7 +8,7 @@ import java.util.Objects;
  * <p>
  * Objet tuile qui contient ses coordonnées en X et en Y
  */
-public class Tuile {
+public class Tuile implements Cloneable {
 
     /**
      * Coordonées en X de la tuile sur le damier
@@ -83,6 +83,15 @@ public class Tuile {
     public Tuile(int p_x, int p_y) {
         x = p_x;
         y = p_y;
+    }
+
+    public Tuile clone() throws CloneNotSupportedException{
+        Tuile clone =  super.clone();
+        clone.setTuileBasDroite(null);
+        clone.setTuileBasGauche(null);
+        clone.setTuileHautDroite(null);
+        clone.setTuileHautGauche(null);
+        return clone;
     }
 
 

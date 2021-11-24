@@ -15,7 +15,7 @@ import static cstjean.mobile.jeudedame.code.DamierUtilitaire.transformerPosition
  * @author Sebastien Fortier
  * @author Yoan Gauthier
  */
-public class Damier {
+public class Damier implements Cloneable{
 
     /**
      * Instance du singleton
@@ -107,6 +107,7 @@ public class Damier {
 
         m_estTourJoueurBlanc = true;
         Set<Tuile> tuiles = m_tuiles.keySet();
+
         for (Tuile tuile : tuiles) {
             populerTuile(tuile);
         }
@@ -605,6 +606,7 @@ public class Damier {
         }
 
         Tuile tuileTmp = p_tuile;
+        Damier damierTmp =
         /* HautGauche */
         while(true){
             try{
@@ -749,7 +751,19 @@ public class Damier {
                 }
             }
         }
+        Lin
         return true;
+    }
+    public Damier clone(){
+        Damier clone = super.clone();
+        Map<Tuile, Pion> mapClone = new LinkedHashMap<>();
+
+        for (Map.Entry<Tuile, Pion> entry:
+                clone.m_tuiles) {
+            mapClone.put(entry);
+
+
+        }
     }
 
 }
