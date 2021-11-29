@@ -11,6 +11,7 @@ import cstjean.mobile.jeudedame.code.Tuile;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -135,6 +136,15 @@ public class TestDamier {
 
         assertTrue(damierTest.listeMove.get(1).contains(damierTest.getTuile(6,3)));
         assertTrue(damierTest.listeMove.get(1).contains(damierTest.getTuile(8,1)));
+    }
+
+
+    @Test
+    public void testDamierCLone() throws CloneNotSupportedException {
+        Damier damier1 = Damier.getInstance();
+        Damier damier2 = damier1.clone();
+        damier2.supprimerPion(new Tuile(1,0));
+        assertNotEquals(damier2.getPion(new Tuile(1,0)), damier1.getPion(new Tuile(1,0)));
     }
 
 

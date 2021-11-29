@@ -29,7 +29,7 @@ public class Damier implements Cloneable{
     /**
      * Structure contenant les pions et leurs endroits sur le jeu
      */
-    private final Map<Tuile, Pion> m_tuiles = new LinkedHashMap<>();
+    private Map<Tuile, Pion> m_tuiles = new LinkedHashMap<>();
     /**
      * Détermine si c'est le tour du joueur blanc
      */
@@ -171,7 +171,6 @@ public class Damier implements Cloneable{
             p_tuile.setTuileBasDroite(getTuile(p_tuile.getX() + 1, p_tuile.getY() + 1));
             p_tuile.setTuileHautDroite(getTuile(p_tuile.getX() + 1, p_tuile.getY() - 1));
         }
-
     }
 
     /**
@@ -606,7 +605,7 @@ public class Damier implements Cloneable{
         }
 
         Tuile tuileTmp = p_tuile;
-        Damier damierTmp =
+        //Damier damierTmp = TODO
         /* HautGauche */
         while(true){
             try{
@@ -751,19 +750,22 @@ public class Damier implements Cloneable{
                 }
             }
         }
-        Lin
         return true;
     }
-    public Damier clone(){
-        Damier clone = super.clone();
+    public Damier clone() throws CloneNotSupportedException {
+        Damier clone = (Damier) super.clone();
         Map<Tuile, Pion> mapClone = new LinkedHashMap<>();
 
+
+        clone.m_tuiles = m_tuiles;
         for (Map.Entry<Tuile, Pion> entry:
-                clone.m_tuiles) {
-            mapClone.put(entry);
-
-
+                clone.m_tuiles.entrySet()){
+            mapClone.put(entry.getKey().clone(), entry.getValue().clone());
         }
+        for (Tuile tuile :  clone.m_tuiles.keySet() ) {
+            populerTuile(tuile);
+        }
+        return clone;//TODO
     }
 
 }
